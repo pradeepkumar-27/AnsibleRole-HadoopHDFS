@@ -1,0 +1,5 @@
+---
+# defaults file for HadoopHDFS
+nn_dir: /nn
+dn_dir: /dn
+hdfs_port: 7001

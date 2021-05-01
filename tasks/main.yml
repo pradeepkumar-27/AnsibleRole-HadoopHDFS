@@ -1,0 +1,57 @@
+---
+# tasks file for HadoopHDFS
+- name: "Setting fact"
+  set_fact:
+    nn_ip: "{{ hostvars[groups['NameNode'][0]]['ansible_all_ipv4_addresses'][0] }}"
+- name: "Creating directory in NameNode"
+  file:
+    path: "{{ nn_dir }}"
+    state: directory
+  when: inventory_hostname in groups['NameNode']
+- name: "Creating directory in DataNode"
+  file:
+    path: "{{ dn_dir }}"
+    state: directory
+  when: inventory_hostname in groups['DataNodes']
+- name: "Copying hdfs-site.xml to NameNode"
+  template:
+    src: nn-hdfs-site.xml.j2
+    dest: /etc/hadoop/hdfs-site.xml
+  when: inventory_hostname in groups['NameNode']
+- name: "Copying hdfs-site.xml to DataNode"
+  template:
+    src: dn-hdfs-site.xml.j2
+    dest: /etc/hadoop/hdfs-site.xml
+  when: inventory_hostname in groups['DataNodes']
+- name: "Copying core-site.xml to NameNode"
+  template:
+    src: nn-core-site.xml.j2
+    dest: /etc/hadoop/core-site.xml
+  when: inventory_hostname in groups['NameNode']
+- name: "Copying core-site.xml to DataNode"
+  template:
+    src: dn-core-site.xml.j2
+    dest: /etc/hadoop/core-site.xml
+  when: inventory_hostname not in groups['NameNode']
+- name: "Formatting NameNode"
+  shell:
+    cmd: echo Y | hadoop namenode -format
+  when: inventory_hostname in groups['NameNode']
+- name: "Starting Hadoop daemon NameNode"
+  shell:
+    cmd: hadoop-daemon.sh start namenode
+  when: inventory_hostname in groups['NameNode']
+- name: "Permanent enable NameNode"
+  lineinfile:
+    path: /etc/rc.d/rc.local
+    line: hadoop-daemon.sh start namenode
+  when: inventory_hostname in groups['NameNode']
+- name: "Starting Hadoop daemon DataNode"
+  shell:
+    cmd: hadoop-daemon.sh start datanode
+  when: inventory_hostname in groups['DataNodes']
+- name: "Permanent enable DataNode"
+  lineinfile:
+    path: /etc/rc.d/rc.local
+    line: hadoop-daemon.sh start datanode
+  when: inventory_hostname in groups['DataNodes']
