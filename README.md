@@ -18,43 +18,44 @@ ansibele.cfg
 
 Ansible configuration file to run the role
 
-[defaults]
-interpreter_python=auto_silent
-inventory      = ./hosts
-roles_path    = ./yourRolesPath (i.e the path where you have downloaded this role)
-host_key_checking = False
-remote_user = ec2-user
-private_key_file = ./yourKey.pem
-[privilege_escalation]
-become=True
-become_method=sudo
-become_user=root
-become_ask_pass=False
+    [defaults]
+    interpreter_python=auto_silent
+    inventory      = ./hosts
+    roles_path    = ./yourRolesPath (i.e the path where you have downloaded this role)
+    host_key_checking = False
+    remote_user = ec2-user
+    private_key_file = ./yourKey.pem
+    
+    [privilege_escalation]
+    become=True
+    become_method=sudo
+    become_user=root
+    become_ask_pass=False
 
 hosts
 ------------
 
 Ansible inventory file where you have to put the IP of the servers
 
-[NameNode]
-namenode
-
-[DataNodes]
-datanode1
-datanode2
-datanode3
-
-[JobTracker]
-jobtracker
-
-[Client]
-client
-
-[HDFS:children]
-NameNode
-DataNodes
-Client
-JobTracker
+    [NameNode]
+    namenode
+    
+    [DataNodes]
+    datanode1
+    datanode2
+    datanode3
+    
+    [JobTracker]
+    jobtracker
+    
+    [Client]
+    client
+    
+    [HDFS:children]
+    NameNode
+    DataNodes
+    Client
+    JobTracker
 
 Example Playbook
 ----------------
