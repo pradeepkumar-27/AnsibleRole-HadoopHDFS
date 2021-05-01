@@ -35,7 +35,7 @@ Ansible configuration file to run the role
 hosts
 ------------
 
-Ansible inventory file where you have to put the IP of the servers
+Ansible inventory file where you have to put the IP of the servers. Since I'm setting up the HDFS cluster with the intention to integrate it with Hadoop MapReduce cluster for data analysis on the stored BigData. Hence I'm configuring JobTracker and Client systems also.
 
     [NameNode]
     namenode
