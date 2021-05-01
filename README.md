@@ -1,38 +1,68 @@
-Role Name
+HadoopHDFS
 =========
 
-A brief description of the role goes here.
+Ansible role to configure Hadoop Distributed File System.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+I have created this role to configure my HDFS servers on top of Amazom Web Services (AWS), hence I have created my custom Elastic Cloud Compute (EC2) Amazon Machine Image (AMI) on top of Amazon Linux 2 with JDK 8u171 and Hadoop 1.2.1 pre-installed. You can find my custom AMI ID "ami-01bb2347b233b5110" on AWS.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+This has three variables namely "nn_dir" which depicts the NameNode directory on the master node, "dn_dir" which depicts the DataNode directory on the slave nodes and "hdfs_port" which represents the port number on which the cluster works
 
-Dependencies
+ansibele.cfg
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Ansible configuration file to run the role
+
+[defaults]
+interpreter_python=auto_silent
+inventory      = ./hosts
+roles_path    = ./yourRolesPath (i.e the path where you have downloaded this role)
+host_key_checking = False
+remote_user = ec2-user
+private_key_file = ./yourKey.pem
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+become_ask_pass=False
+
+hosts
+------------
+
+Ansible inventory file where you have to put the IP of the servers
+
+[NameNode]
+namenode
+
+[DataNodes]
+datanode1
+datanode2
+datanode3
+
+[JobTracker]
+jobtracker
+
+[Client]
+client
+
+[HDFS:children]
+NameNode
+DataNodes
+Client
+JobTracker
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: HDFS
       roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+         - role: HadoopHDFS
+           vars:
+             nn_dir: /nn
+             dn_dir: /dn
+             hdfs_port: 7001
