@@ -11,12 +11,12 @@ I have created this role to configure my HDFS servers on top of Amazom Web Servi
 Role Variables
 --------------
 
-This has three variables namely "nn_dir" which depicts the NameNode directory on the master node, "dn_dir" which depicts the DataNode directory on the slave nodes and "hdfs_port" which represents the port number on which the cluster works
+This role has three variables namely "nn_dir" which depicts the NameNode directory on the master node, "dn_dir" which depicts the DataNode directory on the slave nodes and "hdfs_port" which represents the port number on which the cluster works.
 
 ansibele.cfg
 ------------
 
-Ansible configuration file to run the role
+Ansible configuration file to run this role
 
     [defaults]
     interpreter_python=auto_silent
