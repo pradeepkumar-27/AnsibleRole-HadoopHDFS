@@ -55,3 +55,5 @@
     path: /etc/rc.d/rc.local
     line: hadoop-daemon.sh start datanode
   when: inventory_hostname in groups['DataNodes']
+- shell:
+    cmd: chmod +x /etc/rc.d/rc.local
